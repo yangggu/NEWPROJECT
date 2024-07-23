@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지도 검색</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}">
+</head>
+<body>
+    <h1>지도 검색</h1>
+    <div class="container">
+        <div class="left-column">
+            <form action="/" method="post">
+                <label for="address">주소 입력:</label>
+                <input type="text" id="address" name="address" placeholder="도로명주소입력" required>
+                <button type="submit">검색</button>
+            </form>
+            <!-- 에러 메시지 표시 -->
+            {% if data.error %}
+            <p style="color: red;">{{ data.error }}</p>
+            {% endif %}
+            {% if data and data.landuse_list %}
+            <!-- 용도지역지구 정보 표시 -->
+            <h2>주소지 정보</h2>
+            <table>
+                <tr>
+                    <th>항목</th>
+                    <th>정보</th>
+                    <th>링크</th>
+                </tr>
+                <tr>
+                    <td>주소지</td>
+                    <td>{{ data.refined_address }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>용도지역지구</td>
+                    <td>{{ data.landuse_list[0] }}, {{ data.landuse_list[1] }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>건폐율</td>
+                    <td>{{ data.building_coverage }}</td>
+                    <td><a href="https://www.law.go.kr/법령/국토의계획및이용에관한법률시행령/제84조" target="_blank">법령 조회</a></td>
+                </tr>
+                <tr>
+                    <td>용적률</td>
+                    <td>{{ data.floor_area_ratio }}</td>
+                    <td><a href="https://www.law.go.kr/법령/국토의계획및이용에관한법률시행령/제85조" target="_blank">법령 조회</a></td>
+                </tr>
+            </table>
+            {% endif %}
+        </div>
+        <div class="right-column">
+            {% if map_html %}
+            <div id="map">
+                {{ map_html|safe }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
