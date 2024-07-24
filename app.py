@@ -14,6 +14,10 @@ def index():
         address = request.form['address']
         roadorparcel = 'road'
         
+        if not address:
+            data['error'] = "주소를 입력해 주세요."
+            return render_template('index.html', map_html=map_html, data=data)
+        
         try:
             coordinates = get_coord_raddr_jijache.get_coordinates(address, roadorparcel)
 
@@ -22,8 +26,15 @@ def index():
             
             map_html = generatemap.generate_map(coordinates)
             refined_address = get_coord_raddr_jijache.get_refined_address(address, roadorparcel)
-            pnu = get_pnu_landuse.get_pnu(coordinates)        
+            pnu = get_pnu_landuse.get_pnu(coordinates)
+
+            if not pnu:
+                raise ValueError("PNU not found for the given coordinates.")
+            
             landuse_list = get_pnu_landuse.get_landuse(pnu)
+
+            if not landuse_list or len(landuse_list) < 2:
+                raise ValueError("Landuse information is incomplete or missing.")
             
             building_coverage = get_bc_far.building_coverage(landuse_list[1])
             floor_area_ratio = get_bc_far.floor_area_ratio(landuse_list[1])
