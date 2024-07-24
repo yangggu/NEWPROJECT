@@ -8,7 +8,7 @@ class WebDriverSingleton:
     @classmethod
     def get_instance(cls):
         if cls._instance is None:
-            service = Service(ChromeDriverManager().install())
+            service = Service(ChromeDriverManager(version='114.0.5735.90').install())
             options = webdriver.ChromeOptions()
             options.add_argument('--headless')
             options.add_argument('--no-sandbox')
