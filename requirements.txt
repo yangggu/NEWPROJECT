@@ -1,3 +1,4 @@
 Flask==3.0.3
 Werkzeug==3.0.3
-python-dotenv
+selenium==4.22.0
+python-dotenvad
