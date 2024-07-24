@@ -19,25 +19,31 @@ def index():
             return render_template('index.html', map_html=map_html, data=data)
         
         try:
+            print(f"Received address: {address}")
             coordinates = get_coord_raddr_jijache.get_coordinates(address, roadorparcel)
+            print(f"Coordinates obtained: {coordinates}")
 
             if not coordinates:
                 raise ValueError("Invalid address or coordinates not found.")
             
             map_html = generatemap.generate_map(coordinates)
             refined_address = get_coord_raddr_jijache.get_refined_address(address, roadorparcel)
+            print(f"Refined address: {refined_address}")
             pnu = get_pnu_landuse.get_pnu(coordinates)
+            print(f"PNU obtained: {pnu}")
 
             if not pnu:
                 raise ValueError("PNU not found for the given coordinates.")
             
             landuse_list = get_pnu_landuse.get_landuse(pnu)
+            print(f"Landuse list: {landuse_list}")
 
             if not landuse_list or len(landuse_list) < 2:
                 raise ValueError("Landuse information is incomplete or missing.")
             
             building_coverage = get_bc_far.building_coverage(landuse_list[1])
             floor_area_ratio = get_bc_far.floor_area_ratio(landuse_list[1])
+            print(f"Building coverage: {building_coverage}, Floor area ratio: {floor_area_ratio}")
 
             data = {
                     'refined_address': refined_address,
