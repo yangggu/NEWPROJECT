@@ -1,7 +1,8 @@
 import requests
-import config
-import json
-vw_apikey = config.vw_apikey
+from dotenv import load_dotenv
+import os
+
+vw_apikey = os.getenv('vw_apikey')
 
 # 좌표input -> 필지번호output
 def get_pnu(coordinates):

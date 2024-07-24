@@ -1,7 +1,8 @@
 import requests
-import config
-import json
-vw_apikey = config.vw_apikey
+from dotenv import load_dotenv
+import os
+
+vw_apikey = os.getenv('vw_apikey')
 
 def get_coordinates(address, roadorparcel):
     url = 'https://api.vworld.kr/req/address?'

@@ -1,7 +1,8 @@
 import folium
-import config
+from dotenv import load_dotenv
+import os
 
-vw_apikey = config.vw_apikey
+vw_apikey = os.getenv('vw_apikey')
 
 # 지도 생성 함수 정의
 def generate_map(coordinates=None, zoom=None):

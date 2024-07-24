@@ -3,9 +3,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from singleton_webdriver import WebDriverSingleton
-import config
+from dotenv import load_dotenv
+import os
 
-law_apikey_id = config.law_apikey_id
+law_apikey_id = os.getenv('law_apikey_id')
 
 def fetch_law_page(JoNm):
     driver = WebDriverSingleton.get_instance()
