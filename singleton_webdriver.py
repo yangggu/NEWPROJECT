@@ -1,5 +1,5 @@
-import os
-os.environ['PATH'] = os.environ.get('PATH', '') + ':/path/to/chrome'
+# import os
+# os.environ['PATH'] = os.environ.get('PATH', '') + ':/path/to/chrome'
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -20,7 +20,7 @@ class WebDriverSingleton:
                 options.add_argument('--disable-dev-shm-usage')
                 options.add_argument('--disable-gpu') 
                 options.add_argument('--window-size=1920x1080') 
-                cls._instance = webdriver.Chrome(service=service, options=options)
+                cls._instance = webdriver.Chrome(service=service, options=options, executable_path='/path/to/chromedriver')
             except WebDriverException as e:
                 print(f"웹 드라이버 오류: {e}")
         return cls._instance
