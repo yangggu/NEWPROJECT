@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.common.exceptions import WebDriverException
+from webdriver_manager.chrome import ChromeDriverManager
 
 class WebDriverSingleton:
     _instance = None
@@ -9,7 +9,7 @@ class WebDriverSingleton:
     def get_instance(cls):
         if cls._instance is None:
             try:
-                service = Service()
+                service = Service(ChromeDriverManager().install())
                 options = webdriver.ChromeOptions()
                 options.add_argument('--headless')
                 options.add_argument('--no-sandbox')
@@ -17,12 +17,17 @@ class WebDriverSingleton:
                 options.add_argument('--disable-gpu') 
                 options.add_argument('--window-size=1920x1080') 
                 cls._instance = webdriver.Chrome(service=service, options=options)
-            except WebDriverException as e:
-                print(f"웹 드라이버 오류: {e}")
+            except Exception as e:
+                print(f"Failed to create WebDriver instance: {e}")
+                cls._instance = None
         return cls._instance
 
     @classmethod
     def quit_instance(cls):
         if cls._instance is not None:
-            cls._instance.quit()
-            cls._instance = None
+            try:
+                cls._instance.quit()
+            except Exception as e:
+                print(f"Failed to quit WebDriver instance: {e}")
+            finally:
+                cls._instance = None
