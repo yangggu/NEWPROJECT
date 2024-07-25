@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 import atexit
 from singleton_webdriver import WebDriverSingleton
 import get_bc_far, get_pnu_landuse, get_coord_raddr_jijache, generatemap
+from waitress import serve
 
 app = Flask(__name__)
 
@@ -61,4 +62,4 @@ def index():
 atexit.register(WebDriverSingleton.quit_instance)
 
 if __name__ == "__main__":
-    app.run()
+    serve(app)
