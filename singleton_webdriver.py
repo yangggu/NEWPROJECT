@@ -9,8 +9,13 @@ class WebDriverSingleton:
     def get_instance(cls):
         if cls._instance is None:
             try:
-                service = ChromeService(ChromeDriverManager().install())
+                chrome_driver_path = ChromeDriverManager().install()
+                service = ChromeService(chrome_driver_path)
+
                 options = webdriver.ChromeOptions()
+
+                options.binary_location = "/usr/bin/google-chrome"
+
                 options.add_argument('--headless')
                 options.add_argument('--no-sandbox')
                 options.add_argument('--disable-dev-shm-usage')
