@@ -1,7 +1,8 @@
 from selenium import webdriver
 import docker
 import time
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 class WebDriverSingleton:
     _instance = None
@@ -10,17 +11,16 @@ class WebDriverSingleton:
     def get_instance(cls):
         if cls._instance is None:
             try:
-                options = webdriver.ChromeOptions()
+                options = Options()
                 options.add_argument('--headless')
                 options.add_argument('--no-sandbox')
                 options.add_argument('--disable-dev-shm-usage')
-                options.add_argument('--disable-gpu') 
-                options.add_argument('--window-size=1920x1080') 
+                options.add_argument('--disable-gpu')
+                options.add_argument('--window-size=1920x1080')
                 
                 # Selenium Remote WebDriver 설정
                 cls._instance = webdriver.Remote(
                     command_executor='http://localhost:4444/wd/hub',
-                    desired_capabilities=DesiredCapabilities.CHROME,
                     options=options
                 )
                 
