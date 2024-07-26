@@ -6,3 +6,4 @@ beautifulsoup4==4.12.3
 folium==0.17.0
 python-dotenv
 gunicorn
+docker==7.1.0
