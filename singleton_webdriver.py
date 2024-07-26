@@ -40,19 +40,22 @@ class WebDriverSingleton:
                 cls._instance = None
 
 # Docker 클라이언트 설정 및 컨테이너 실행
-client = docker.from_env()
+try:
+    client = docker.from_env()
 
-container = client.containers.run(
-    "selenium/standalone-chrome:latest",
-    ports={'4444/tcp': 4444},
-    detach=True,
-    name="zipup-selenium"
-)
+    container = client.containers.run(
+        "selenium/standalone-chrome:latest",
+        ports={'4444/tcp': 4444},
+        detach=True,
+        name="zipup-selenium"
+    )
 
-# 컨테이너가 완전히 시작될 때까지 대기
-time.sleep(5)
+    # 컨테이너가 완전히 시작될 때까지 대기
+    time.sleep(5)
 
-# 애플리케이션이 종료될 때 컨테이너 정리
-import atexit
-atexit.register(lambda: container.stop())
-atexit.register(lambda: container.remove())
+    # 애플리케이션이 종료될 때 컨테이너 정리
+    import atexit
+    atexit.register(lambda: container.stop())
+    atexit.register(lambda: container.remove())
+except docker.errors.DockerException as e:
+    print(f"Error initializing Docker container: {e}")
