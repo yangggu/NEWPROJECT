@@ -6,6 +6,7 @@ from singleton_webdriver import WebDriverSingleton
 from dotenv import load_dotenv
 import os
 
+load_dotenv()
 law_apikey_id = os.getenv('law_apikey_id')
 
 def fetch_law_page(JoNm):
